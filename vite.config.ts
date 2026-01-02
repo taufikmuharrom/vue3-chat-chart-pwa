@@ -17,8 +17,17 @@ export default defineConfig({
       devOptions: {
         enabled: true,
         type: 'module',
+        navigateFallback: 'index.html',
       },
-      includeAssets: ['favicon.ico', 'icon-192.png', 'icon-512.png'],
+      includeAssets: [
+        'favicon.ico',
+        'icon-192.png',
+        'icon-512.png',
+        'screenshot-mobile-chat.jpg',
+        'screenshot-mobile-chart.jpg',
+        'chat-desktop.png',
+        'chart-desktop.png',
+      ],
       manifest: {
         name: 'Chat & Chart Explorer',
         short_name: 'ChatChart',
@@ -49,9 +58,40 @@ export default defineConfig({
             purpose: 'maskable',
           },
         ],
+        screenshots: [
+          {
+            src: 'screenshot-mobile-chat.jpg',
+            sizes: '576x1280',
+            type: 'image/jpeg',
+            form_factor: 'narrow',
+            label: 'Chat View - Mobile',
+          },
+          {
+            src: 'screenshot-mobile-chart.jpg',
+            sizes: '576x1280',
+            type: 'image/jpeg',
+            form_factor: 'narrow',
+            label: 'Chart View - Mobile',
+          },
+          {
+            src: 'chat-desktop.png',
+            sizes: '2880x1518',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Chat View - Desktop',
+          },
+          {
+            src: 'chart-desktop.png',
+            sizes: '2880x1518',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Chart View - Desktop',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        navigateFallback: null, // Important for proper routing
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
@@ -61,6 +101,9 @@ export default defineConfig({
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
               },
             },
           },
