@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/vue3-chat-chart-pwa/sw.js', { scope: '/vue3-chat-chart-pwa/' })})}
