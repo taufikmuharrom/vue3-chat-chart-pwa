@@ -2,10 +2,12 @@
 import { computed, onMounted } from 'vue'
 import { useChartStore } from '@/stores/chartStore'
 import ChartCard from '@/components/ChartCard.vue'
-import { RefreshCw } from 'lucide-vue-next'
+import { RefreshCw, Download } from 'lucide-vue-next'
 import type { EChartsOption } from '@/types'
+import { usePwaInstall } from '@/composables/usePwaInstall'
 
 const chartStore = useChartStore()
+const { deferredPrompt, installPwa } = usePwaInstall()
 
 // Generate data on mount
 onMounted(() => {
@@ -214,21 +216,31 @@ const handleRefresh = () => {
   <div class="min-h-screen bg-[#F3F4F6] pb-20">
     <!-- Header -->
     <header class="bg-white shadow-sm p-4 sticky top-0 z-10">
-      <div class="max-w-screen-xl mx-auto flex items-center justify-between">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
         <h1 class="text-2xl font-bold text-black">Charts</h1>
-        <button
-          @click="handleRefresh"
-          class="flex items-center gap-2 px-4 py-2 bg-[#FF6B00] text-white rounded-lg hover:bg-[#FF8C3A] transition-colors duration-200 shadow-md"
-        >
-          <RefreshCw :size="18" />
-          <span class="font-medium">Refresh Data</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            v-if="deferredPrompt"
+            @click="installPwa"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md"
+          >
+            <Download :size="18" />
+            <span class="font-medium">Install</span>
+          </button>
+          <button
+            @click="handleRefresh"
+            class="flex items-center gap-2 px-4 py-2 bg-[#FF6B00] text-white rounded-lg hover:bg-[#FF8C3A] transition-colors duration-200 shadow-md"
+          >
+            <RefreshCw :size="18" />
+            <span class="font-medium">Refresh Data</span>
+          </button>
+        </div>
       </div>
     </header>
 
     <!-- Charts Grid -->
     <div class="px-4 py-6">
-      <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <ChartCard title="Weekly Traffic" :chart-option="lineChartOption" />
         <ChartCard title="Category Performance" :chart-option="barChartOption" />
         <ChartCard title="Distribution" :chart-option="pieChartOption" />
