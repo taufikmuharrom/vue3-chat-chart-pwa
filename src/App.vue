@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import Button from './components/ui/button/Button.vue'
+import { RouterView } from 'vue-router'
+import BottomNav from './components/BottomNav.vue'
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-screen">
-    <div class="bg-red-200 p-4 rounded-2xl">HELLO WORLD</div>
-    <Button>Button</Button>
+  <div class="app">
+    <RouterView />
+    <BottomNav />
   </div>
 </template>
